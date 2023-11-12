@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="Dalamud.Plugin.Bootstrap.targets" />
+
+  <PropertyGroup>
+    <Authors>Chalkos</Authors>
+    <Version>0.0.0.1</Version>
+    <Description>Error Sound Begone!</Description>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+</Project>

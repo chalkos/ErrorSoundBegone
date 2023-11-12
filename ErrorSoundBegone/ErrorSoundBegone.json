@@ -1,0 +1,11 @@
+{
+  "Author": "Chalkos",
+  "Name": "Error Sound Begone!",
+  "Punchline": "Mute annoying error sounds",
+  "Description": "Mutes error and ability clicking sounds. Command /errorsoundbegone toggles both. Use argument 'click' or 'error' to toggle those specifically",
+  "InternalName": "ErrorSoundBegone",
+  "ApplicableVersion": "any",
+  "Tags": [
+    "goats"
+  ]
+}
