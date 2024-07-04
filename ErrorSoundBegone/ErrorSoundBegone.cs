@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Dalamud.Game;
 using Dalamud.Game.Command;
 using Dalamud.Hooking;
 using Dalamud.IoC;
@@ -9,31 +10,21 @@ namespace ErrorSoundBegone
 {
     public sealed unsafe class ErrorSoundBegone : IDalamudPlugin
     {
+        [PluginService] internal static IDalamudPluginInterface PluginInterface { get; private set; } = null!;
+        [PluginService] internal static IGameInteropProvider GameInteropProvider { get; private set; } = null!;
+        [PluginService] internal static ICommandManager CommandManager { get; private set; } = null!;
+        [PluginService] internal static IChatGui ChatGui { get; private set; } = null!;
+        
         public string Name => "Error Sound Begone";
         private const string CommandName = "/errorsoundbegone";
 
-        private DalamudPluginInterface PluginInterface { get; init; }
-        private ICommandManager CommandManager { get; init; }
-        private IGameInteropProvider GameInteropProvider { get; init; }
-
-        private IChatGui ChatGui { get; init; }
         public Configuration Configuration { get; init; }
 
-        public ErrorSoundBegone(
-            [RequiredVersion("1.0")] DalamudPluginInterface pluginInterface,
-            [RequiredVersion("1.0")] ICommandManager commandManager,
-            [RequiredVersion("1.0")] IGameInteropProvider gameInteropProvider,
-            [RequiredVersion("1.0")] IChatGui chatGui)
+        public ErrorSoundBegone()
         {
-            this.PluginInterface = pluginInterface;
-            this.CommandManager = commandManager;
-            this.GameInteropProvider = gameInteropProvider;
-            this.ChatGui = chatGui;
+            Configuration = PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
 
-            this.Configuration = this.PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
-            this.Configuration.Initialize(this.PluginInterface);
-
-            this.CommandManager.AddHandler(CommandName, new CommandInfo(OnCommand)
+            CommandManager.AddHandler(CommandName, new CommandInfo(OnCommand)
             {
                 HelpMessage = "Toggle muting error sounds. Toggles both without arguments. Use 'click' or 'error' to toggle those specifically"
             });
@@ -46,7 +37,7 @@ namespace ErrorSoundBegone
 
         public void Dispose()
         {
-            this.CommandManager.RemoveHandler(CommandName);
+            CommandManager.RemoveHandler(CommandName);
             playSoundEffectHook.Disable();
             playSoundEffectHook.Dispose();
             playSoundEffectCallerHook.Disable();
@@ -82,8 +73,8 @@ namespace ErrorSoundBegone
         private readonly Hook<PlaySoundEffectDelegate> playSoundEffectHook;
         private readonly Hook<PlaySoundEffectCallerDelegate> playSoundEffectCallerHook;
         
-        private const string PlaySoundEffectSignature = "E8 ?? ?? ?? ?? 4D 39 BE";
-        private const string PlaySoundEffectCallerSignature = "40 56 57 41 56 48 81 EC ?? ?? ?? ?? 48 8B 05 ?? ?? ?? ?? 48 33 C4 48 89 84 24 ?? ?? ?? ?? 41 8B F0";
+        private const string PlaySoundEffectSignature = "E8 ?? ?? ?? ?? 4D 39 A6";
+        private const string PlaySoundEffectCallerSignature = "48 89 5C 24 ?? 55 56 57 48 8D 6C 24 ?? 48 81 EC ?? ?? ?? ?? 48 8B 05 ?? ?? ?? ?? 48 33 C4 48 89 45 37 41 8B F8 48 8B DA 48 8B F1 45 84 C9";
 
         private bool suppressErrorSound = true;
 
@@ -99,7 +90,7 @@ namespace ErrorSoundBegone
         {
             if (Configuration.FilterErrorSounds && soundId == 7u && suppressErrorSound) return;
             if (Configuration.FilterClickSounds && soundId == 12u) return;
-
+            
             playSoundEffectHook.Original.Invoke(soundId, a2, a3, a4);
         }
 

@@ -4,7 +4,7 @@
 
   <PropertyGroup>
     <Authors>Chalkos</Authors>
-    <Version>0.0.0.1</Version>
+    <Version>0.0.0.2</Version>
     <Description>Error Sound Begone!</Description>
     <IsPackable>false</IsPackable>
   </PropertyGroup>

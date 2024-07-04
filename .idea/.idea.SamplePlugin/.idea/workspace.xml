@@ -1,26 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0335ed2e-e4ee-4280-829e-a3220d3c128b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.ErrorSoundBegone/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.ErrorSoundBegone/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.ErrorSoundBegone/.idea/indexLayout.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.ErrorSoundBegone/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.SamplePlugin/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ErrorSoundBegone/ErrorSoundBegone.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ErrorSoundBegone/ErrorSoundBegone.csproj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ErrorSoundBegone/ErrorSoundBegone.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SamplePlugin.sln" beforeDir="false" afterPath="$PROJECT_DIR$/ErrorSoundBegone.sln" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SamplePlugin/Configuration.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ErrorSoundBegone/Configuration.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SamplePlugin/Dalamud.Plugin.Bootstrap.targets" beforeDir="false" afterPath="$PROJECT_DIR$/ErrorSoundBegone/Dalamud.Plugin.Bootstrap.targets" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SamplePlugin/Plugin.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SamplePlugin/SamplePlugin.csproj" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SamplePlugin/SamplePlugin.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SamplePlugin/Windows/ConfigWindow.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SamplePlugin/Windows/MainWindow.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SamplePlugin/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/ErrorSoundBegone/packages.lock.json" afterDir="false" />
-    </list>
+    <list default="true" id="0335ed2e-e4ee-4280-829e-a3220d3c128b" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -66,7 +47,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1699772954816</updated>
-      <workItem from="1699772957347" duration="5244000" />
+      <workItem from="1699772957347" duration="5318000" />
     </task>
     <servers />
   </component>

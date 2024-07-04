@@ -11,18 +11,9 @@ namespace ErrorSoundBegone
         public bool FilterErrorSounds { get; set; } = false;
         public bool FilterClickSounds { get; set; } = false;
 
-        // the below exist just to make saving less cumbersome
-        [NonSerialized]
-        private DalamudPluginInterface? PluginInterface;
-
-        public void Initialize(DalamudPluginInterface pluginInterface)
-        {
-            this.PluginInterface = pluginInterface;
-        }
-
         public void Save()
         {
-            this.PluginInterface!.SavePluginConfig(this);
+            ErrorSoundBegone.PluginInterface.SavePluginConfig(this);
         }
     }
 }
