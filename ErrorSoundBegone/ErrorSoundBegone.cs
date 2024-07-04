@@ -5,16 +5,28 @@ using Dalamud.Hooking;
 using Dalamud.IoC;
 using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
+using Dalamud.Utility.Signatures;
 
 namespace ErrorSoundBegone
 {
     public sealed unsafe class ErrorSoundBegone : IDalamudPlugin
     {
+        // services
         [PluginService] internal static IDalamudPluginInterface PluginInterface { get; private set; } = null!;
         [PluginService] internal static IGameInteropProvider GameInteropProvider { get; private set; } = null!;
         [PluginService] internal static ICommandManager CommandManager { get; private set; } = null!;
         [PluginService] internal static IChatGui ChatGui { get; private set; } = null!;
         
+        // hooks
+        private delegate void PlaySoundEffectDelegate(uint soundId, void* a2, void* a3, void* a4);
+        [Signature("E8 ?? ?? ?? ?? 4D 39 A6", DetourName = nameof(PlaySoundEffectDetour))]
+        private Hook<PlaySoundEffectDelegate> playSoundEffectHook;
+        
+        private delegate byte PlaySoundEffectCallerDelegate(void* a1, byte* data, void* a3, void* a4);
+        [Signature("48 89 5C 24 ?? 55 56 57 48 8D 6C 24 ?? 48 81 EC ?? ?? ?? ?? 48 8B 05 ?? ?? ?? ?? 48 33 C4 48 89 45 37 41 8B F8 48 8B DA 48 8B F1 45 84 C9", DetourName = nameof(PlaySoundEffectCallerDetour))]
+        private Hook<PlaySoundEffectCallerDelegate> playSoundEffectCallerHook;
+
+        // plugin
         public string Name => "Error Sound Begone";
         private const string CommandName = "/errorsoundbegone";
 
@@ -28,9 +40,8 @@ namespace ErrorSoundBegone
             {
                 HelpMessage = "Toggle muting error sounds. Toggles both without arguments. Use 'click' or 'error' to toggle those specifically"
             });
-           
-            playSoundEffectHook = GameInteropProvider.HookFromSignature<PlaySoundEffectDelegate>(PlaySoundEffectSignature, PlaySoundEffectDetour);
-            playSoundEffectCallerHook = GameInteropProvider.HookFromSignature<PlaySoundEffectCallerDelegate>(PlaySoundEffectCallerSignature,PlaySoundEffectCallerDetour);
+            
+            GameInteropProvider.InitializeFromAttributes(this);
             playSoundEffectHook.Enable();
             playSoundEffectCallerHook.Enable();
         }
@@ -38,9 +49,7 @@ namespace ErrorSoundBegone
         public void Dispose()
         {
             CommandManager.RemoveHandler(CommandName);
-            playSoundEffectHook.Disable();
             playSoundEffectHook.Dispose();
-            playSoundEffectCallerHook.Disable();
             playSoundEffectCallerHook.Dispose();
         }
 
@@ -66,16 +75,8 @@ namespace ErrorSoundBegone
             ChatGui.Print("Click sounds: " + (Configuration.FilterClickSounds ? "muted":"enabled"));
         }
 
-        private delegate void PlaySoundEffectDelegate(uint soundId, void* a2, void* a3, void* a4);
-
-        private delegate byte PlaySoundEffectCallerDelegate(void* a1, byte* data, void* a3, void* a4);
-
-        private readonly Hook<PlaySoundEffectDelegate> playSoundEffectHook;
-        private readonly Hook<PlaySoundEffectCallerDelegate> playSoundEffectCallerHook;
+        // detour
         
-        private const string PlaySoundEffectSignature = "E8 ?? ?? ?? ?? 4D 39 A6";
-        private const string PlaySoundEffectCallerSignature = "48 89 5C 24 ?? 55 56 57 48 8D 6C 24 ?? 48 81 EC ?? ?? ?? ?? 48 8B 05 ?? ?? ?? ?? 48 33 C4 48 89 45 37 41 8B F8 48 8B DA 48 8B F1 45 84 C9";
-
         private bool suppressErrorSound = true;
 
         private List<byte> errorCodes = new()
